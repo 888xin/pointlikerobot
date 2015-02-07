@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lifeix.robot.dao.PointLikeAccountDao">
+
+    <insert id="insertpointLikeAccount" parameterType="com.lifeix.robot.model.PointLikeAccount">
+        insert into point_like_account(point_accountId,point_gender)
+        values
+        (#{pointAccountId},#{pointGender})
+    </insert>
+
+    <select id="getpointLikeAccounts" parameterType="int" resultType="com.lifeix.robot.model.PointLikeAccount">
+        select id,point_accountId as pointAccountId,point_gender as pointGender
+        from point_like_account where point_gender=(#{pointGender})
+    </select>
+
+</mapper>

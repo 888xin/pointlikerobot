@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lifeix.robot.dao.PointLikeAccountDetailDao">
+
+    <insert id="insertPointLikeAccountDetail" parameterType="com.lifeix.robot.model.PointLikeAccountDetail">
+        insert into point_like_account_detail(id,point_accountId,point_gender,pointed_accountId,pointed_gender,point_time,remark,pointed_root)
+        values
+        (#{id},#{pointAccountId},#{pointGender},#{pointedAccountId},#{pointedGender},#{pointTime},#{remark},#{pointedRoot})
+    </insert>
+
+    <select id="getPointLikeAccountDetails" parameterType="int" resultType="com.lifeix.robot.model.PointLikeAccountDetail">
+        select id,point_accountId as pointAccountId,point_gender as pointGender,
+        pointed_accountId as pointedAccountId,pointed_gender as pointedGender,
+        point_time as pointTime,remark,pointed_root as pointedRoot
+        from point_like_account_detail where point_gender=(#{pointGender})
+    </select>
+
+</mapper>

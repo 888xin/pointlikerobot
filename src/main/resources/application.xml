@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.1.xsd
+http://www.springframework.org/schema/data/mongo
+http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd">
+
+
+
+    <!--&lt;!&ndash; 要调用的工作类 &ndash;&gt;-->
+    <!--<bean id="quartzJob" class="com.lifeix.robot.job.PointLikeJob"></bean>-->
+    <!--&lt;!&ndash; 定义调用对象和调用对象的方法 &ndash;&gt;-->
+    <!--<bean id="jobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+        <!--&lt;!&ndash; 调用的类 &ndash;&gt;-->
+        <!--<property name="targetObject">-->
+            <!--<ref bean="quartzJob"/>-->
+        <!--</property>-->
+        <!--&lt;!&ndash; 调用类中的方法 &ndash;&gt;-->
+        <!--<property name="targetMethod">-->
+            <!--<value>work</value>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash; 定义触发时间 &ndash;&gt;-->
+    <!--<bean id="doTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--<property name="jobDetail">-->
+            <!--<ref bean="jobtask"/>-->
+        <!--</property>-->
+        <!--&lt;!&ndash; cron表达式 &ndash;&gt;-->
+        <!--<property name="cronExpression">-->
+            <!--<value>0/10 * * * * ?</value>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash; 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  &ndash;&gt;-->
+    <!--<bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+        <!--<property name="triggers">-->
+            <!--<list>-->
+                <!--<ref bean="doTime"/>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+
+
+    <context:annotation-config />
+
+
+    <!-- 提供该PropertyPlaceholderConfigurer bean支持把properties文件中的信息读取到XML配置文件的表达式中 -->
+    <!-- 从Spring2.5开始引入命名空间配置加载properties文件到XML -->
+    <context:property-placeholder location="classpath:mongodb.properties" />
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+
+
+    <!-- 通过工厂Bean创建mongo连接实例,没有密码就把username和password属性删除了-->
+    <mongo:db-factory host="${db.host}" port="${db.port}" dbname="${db.database}"
+            />
+    <!--username="${db.username}" password="${db.password}"   /> -->
+
+
+    <!-- mongo模板操作对象 -->
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+    </bean>
+
+    <!-- MongoDB GridFS Template 支持，操作mongodb存放的文件 -->
+    <mongo:mapping-converter id="converter" db-factory-ref="mongoDbFactory"/>
+    <bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+        <constructor-arg ref="mongoDbFactory"/>
+        <constructor-arg ref="converter"/>
+    </bean>
+
+
+
+    <!--<bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
+        <!--<property name="jobClass" value="com.lifeix.robot.job.PointLikeJob"></property>-->
+        <!--<property name="durability" value="true" />-->
+
+    <!--</bean>-->
+
+    <!--<bean id="cronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--<property name="jobDetail" ref="jobDetail"></property>-->
+        <!--<property name="cronExpression" value="0/10 * * * * ?"></property>-->
+    <!--</bean>-->
+
+    <!--<bean id="trigger" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+        <!--<property name="triggers">-->
+            <!--<list>-->
+                <!--<ref bean="cronTriggerBean"/>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+
+
+
+    <!-- 启动触发器的配置开始 -->
+    <bean name="startQuertz" lazy-init="false" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="myJobTrigger" />
+            </list>
+        </property>
+    </bean>
+    <!-- 启动触发器的配置结束 -->
+
+    <!-- quartz-2.x的配置 -->
+    <bean id="myJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="myJobDetail" />
+        </property>
+        <property name="cronExpression">
+            <value>0/1 * * * * ?</value>
+        </property>
+    </bean>
+    <!-- 调度的配置结束 -->
+
+    <!-- job的配置开始 -->
+    <bean id="myJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="myJob" />
+        </property>
+        <property name="targetMethod">
+            <value>work</value>
+        </property>
+    </bean>
+    <!-- job的配置结束 -->
+
+    <!-- 工作的bean -->
+    <bean id="myJob" class="com.lifeix.robot.job.PointLikeJob" />
+
+
+
+</beans>
