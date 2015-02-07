@@ -90,10 +90,10 @@ public class MyTest {
     @Test
     public void testmongoTemplate(){
         AccountContentVO accountContentVO = new AccountContentVO();
-        accountContentVO.setAccountId(12L);
-        accountContentVO.setDashboardId(1007L);
+        accountContentVO.setAccountId(13L);
+        accountContentVO.setDashboardId(1006L);
         accountContentVO.setStatus(false);
-        accountContentVO.setPointedGender(0);
+        accountContentVO.setPointedGender(1);
         accountContentVO.setCreateTime(new Date());
         mongoTemplate.insert(accountContentVO,"accountcontent");
     }

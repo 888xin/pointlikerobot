@@ -41,7 +41,7 @@ public class PointLikeJob {
         //获取需要判断的用户列表
         List<AccountContentVO> accountContentVOList = pointLikeAccountMongoService.get(false);
         if (accountContentVOList == null || accountContentVOList.size()==0){
-            return ;
+            System.out.println("work is over!");
         } else {
             //现在的时间
             Date currentTime = new Date();
@@ -95,7 +95,7 @@ public class PointLikeJob {
                         }
                     }
                 } else {
-                    continue;
+
                 }
             }
         }
