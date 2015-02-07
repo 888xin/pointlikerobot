@@ -15,25 +15,34 @@ import java.util.Date;
  */
 public class AccountContentVO implements Serializable {
 
-    private String dashboardId ;
-    private String accountId ;
+    private long dashboardId ;
+    private long accountId ;
+    private int pointedGender ;
     private Date createTime ;
     private boolean status ;
 
-    public String getDashboardId() {
+    public long getDashboardId() {
         return dashboardId;
     }
 
-    public void setDashboardId(String dashboardId) {
+    public void setDashboardId(long dashboardId) {
         this.dashboardId = dashboardId;
     }
 
-    public String getAccountId() {
+    public long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(String accountId) {
+    public void setAccountId(long accountId) {
         this.accountId = accountId;
+    }
+
+    public int getPointedGender() {
+        return pointedGender;
+    }
+
+    public void setPointedGender(int pointedGender) {
+        this.pointedGender = pointedGender;
     }
 
     public Date getCreateTime() {

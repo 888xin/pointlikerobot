@@ -49,7 +49,9 @@ http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd">
 
 
 
-    <context:annotation-config />
+    <!--<context:annotation-config />-->
+    <!-- 扫描controller（controller层注入） -->
+    <context:component-scan base-package="com.lifeix.robot"/>
 
 
     <!-- 提供该PropertyPlaceholderConfigurer bean支持把properties文件中的信息读取到XML配置文件的表达式中 -->
@@ -119,7 +121,7 @@ http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd">
             <ref bean="myJobDetail" />
         </property>
         <property name="cronExpression">
-            <value>0/1 * * * * ?</value>
+            <value>0 */10 * * * ?</value>
         </property>
     </bean>
     <!-- 调度的配置结束 -->

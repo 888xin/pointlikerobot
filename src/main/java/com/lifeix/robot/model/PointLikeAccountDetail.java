@@ -22,14 +22,23 @@ public class PointLikeAccountDetail implements Serializable {
     private Integer pointedGender ;
     private Date pointTime ;
     private String remark ;
-    private Long pointedRoot ;
+    private Long dashboardId ;
+    private Integer likeExpression; //点赞表情
 
-    public Long getPointedRoot() {
-        return pointedRoot;
+    public Integer getLikeExpression() {
+        return likeExpression;
     }
 
-    public void setPointedRoot(Long pointedRoot) {
-        this.pointedRoot = pointedRoot;
+    public void setLikeExpression(Integer likeExpression) {
+        this.likeExpression = likeExpression;
+    }
+
+    public Long getDashboardId() {
+        return dashboardId;
+    }
+
+    public void setDashboardId(Long dashboardId) {
+        this.dashboardId = dashboardId;
     }
 
     public String getRemark() {

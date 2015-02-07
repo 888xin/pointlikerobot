@@ -5,15 +5,15 @@
 <mapper namespace="com.lifeix.robot.dao.PointLikeAccountDetailDao">
 
     <insert id="insertPointLikeAccountDetail" parameterType="com.lifeix.robot.model.PointLikeAccountDetail">
-        insert into point_like_account_detail(id,point_accountId,point_gender,pointed_accountId,pointed_gender,point_time,remark,pointed_root)
+        insert into point_like_account_detail(id,point_accountId,point_gender,pointed_accountId,pointed_gender,point_time,remark,dashboardId,like_expression)
         values
-        (#{id},#{pointAccountId},#{pointGender},#{pointedAccountId},#{pointedGender},#{pointTime},#{remark},#{pointedRoot})
+        (#{id},#{pointAccountId},#{pointGender},#{pointedAccountId},#{pointedGender},#{pointTime},#{remark},#{dashboardId},#{likeExpression})
     </insert>
 
     <select id="getPointLikeAccountDetails" parameterType="int" resultType="com.lifeix.robot.model.PointLikeAccountDetail">
         select id,point_accountId as pointAccountId,point_gender as pointGender,
         pointed_accountId as pointedAccountId,pointed_gender as pointedGender,
-        point_time as pointTime,remark,pointed_root as pointedRoot
+        point_time as pointTime,remark,dashboardId,like_expression as likeExpression
         from point_like_account_detail where point_gender=(#{pointGender})
     </select>
 

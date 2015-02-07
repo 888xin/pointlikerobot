@@ -4,12 +4,16 @@ import com.lifeix.robot.dao.PointLikeAccountDao;
 import com.lifeix.robot.dao.PointLikeAccountDetailDao;
 import com.lifeix.robot.model.PointLikeAccount;
 import com.lifeix.robot.model.PointLikeAccountDetail;
+import com.lifeix.robot.mongo.PointLikeAccountMongoService;
 import com.lifeix.robot.vo.AccountContentVO;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.Date;
 import java.util.List;
@@ -50,7 +54,7 @@ public class MyTest {
     public void testinsertPraiseUser(){
         PointLikeAccount pointLikeAccount = new PointLikeAccount();
         pointLikeAccount.setPointGender(1);
-        pointLikeAccount.setPointAccountId(254234);
+        pointLikeAccount.setPointAccountId(254234L);
         System.out.println(pointLikeAccountDao.insertpointLikeAccount(pointLikeAccount));
     }
 
@@ -67,12 +71,13 @@ public class MyTest {
     @Test
     public void testinsertPointLikeAccount(){
         PointLikeAccountDetail pointLikeAccountDetail = new PointLikeAccountDetail();
-        pointLikeAccountDetail.setId(1L);
+        pointLikeAccountDetail.setId(1100L);
         pointLikeAccountDetail.setPointAccountId(2L);
         pointLikeAccountDetail.setPointedAccountId(3L);
         pointLikeAccountDetail.setPointedGender(1);
         pointLikeAccountDetail.setPointGender(0);
-        pointLikeAccountDetail.setPointedRoot(34444L);
+        pointLikeAccountDetail.setDashboardId(34444L);
+        pointLikeAccountDetail.setLikeExpression(2);
         pointLikeAccountDetail.setPointTime(new Date());
         pointLikeAccountDetail.setRemark("测试");
         System.out.println(pointLikeAccountDetailDao.insertPointLikeAccountDetail(pointLikeAccountDetail));
@@ -85,11 +90,17 @@ public class MyTest {
     @Test
     public void testmongoTemplate(){
         AccountContentVO accountContentVO = new AccountContentVO();
-        accountContentVO.setAccountId("2");
-        accountContentVO.setDashboardId("32");
+        accountContentVO.setAccountId(12L);
+        accountContentVO.setDashboardId(1007L);
         accountContentVO.setStatus(false);
+        accountContentVO.setPointedGender(0);
         accountContentVO.setCreateTime(new Date());
         mongoTemplate.insert(accountContentVO,"accountcontent");
+    }
+
+    @Test
+    public void testmongoupdate(){
+        mongoTemplate.upsert(new Query(Criteria.where("dashboardId").is(32L)), Update.update("status", true), "accountcontent");
     }
 
 //    @Test

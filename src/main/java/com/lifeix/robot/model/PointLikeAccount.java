@@ -14,23 +14,23 @@ import java.io.Serializable;
  */
 public class PointLikeAccount implements Serializable {
 
-    private int id ;
-    private int pointAccountId ;
+    private Long id ;
+    private Long pointAccountId ;
     private int pointGender ;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getPointAccountId() {
+    public Long getPointAccountId() {
         return pointAccountId;
     }
 
-    public void setPointAccountId(int pointAccountId) {
+    public void setPointAccountId(Long pointAccountId) {
         this.pointAccountId = pointAccountId;
     }
 
