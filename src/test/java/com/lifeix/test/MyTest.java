@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -90,8 +91,8 @@ public class MyTest {
     @Test
     public void testmongoTemplate(){
         AccountContentVO accountContentVO = new AccountContentVO();
-        accountContentVO.setAccountId(13L);
-        accountContentVO.setDashboardId(1006L);
+        accountContentVO.setAccountId(15L);
+        accountContentVO.setDashboardId(1008L);
         accountContentVO.setStatus(false);
         accountContentVO.setPointedGender(1);
         accountContentVO.setCreateTime(new Date());
@@ -101,6 +102,25 @@ public class MyTest {
     @Test
     public void testmongoupdate(){
         mongoTemplate.upsert(new Query(Criteria.where("dashboardId").is(32L)), Update.update("status", true), "accountcontent");
+    }
+
+    @Test
+    public void testgetByTime(){
+        //现在的时间
+        Date currentTime = new Date();
+        //minutes分钟前
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MINUTE, -10);
+        Date end = cal.getTime();
+        Query query = new Query();
+        Criteria criteria = Criteria.where("createTime").gte(end).lte(currentTime);
+        query.addCriteria(criteria);
+        List<AccountContentVO> list = mongoTemplate.find(query, AccountContentVO.class, "accountcontent");
+    }
+
+    @Test
+    public void testgetByNumbers(){
+        List<AccountContentVO> list = mongoTemplate.find(new Query(Criteria.where("status").is(true)).limit(2), AccountContentVO.class, "accountcontent");
     }
 
 //    @Test
